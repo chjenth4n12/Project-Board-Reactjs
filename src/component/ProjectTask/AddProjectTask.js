@@ -12,10 +12,17 @@ class AddProjectTask extends Component {
         this.state = {
             summary: "",
             acceptanceCriteria: "",
-            status: ""
+            status: "",
+            errors: {}
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentWillReceiveProps( nextProps ) {
+        if (nextProps.errors) {
+            this.setState ({ errors: nextProps.errors });
+        }
     }
 
     onChange(e) {
@@ -36,6 +43,7 @@ class AddProjectTask extends Component {
     }
 
     render() {
+        const { errors } = this.state;
         return (
             <div className="addProjectTask">
                 <div className="container">
@@ -47,7 +55,14 @@ class AddProjectTask extends Component {
                             <h4 className="display-4 text-center">Add / Update Project Task</h4>
                             <form onSubmit={this.onSubmit}>
                                 <div className="form-group">
-                                    <input type="text" className="form-control form-control-lg" name="summary" value={this.state.summary} onChange={this.onChange} placeholder="Project Task summary" />
+                                    <input type="text" className={classnames("form-control form-control-lg", {
+                                        "is-invalid": errors.summary
+                                    })} name="summary" value={this.state.summary} onChange={this.onChange} placeholder="Project Task summary" />
+                                    {
+                                        errors.summary && (
+                                            <div className="invalid-feedback">{errors.summary}</div>
+                                        )
+                                    }
                                 </div>
                                 <div className="form-group">
                                     <textarea className="form-control form-control-lg" placeholder="Acceptance Criteria" name="acceptanceCriteria" value={this.state.acceptanceCriteria} onChange={this.onChange}></textarea>
@@ -79,4 +94,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(null, {addProjectTask}) (AddProjectTask);
+export default connect(mapStateToProps, {addProjectTask}) (AddProjectTask);
