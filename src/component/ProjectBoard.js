@@ -28,25 +28,27 @@ class ProjectBoard extends Component {
                     </div>
                 );
             } else {
-                const tasks = project_tasks.map (project_task => (
-                    <ProjectTaskItem key={project_task.id} project_task={project_task}></ProjectTaskItem>
+                const tasks = project_tasks.map(project_task => (
+                    <ProjectTaskItem key={project_task.id} project_task={project_task} />
                 ));
-
+        
                 for (let i = 0; i < tasks.length; i++) {
                     if (tasks[i].props.project_task.status === "TO_DO") {
                         todoItems.push(tasks[i]);
                     }
-
+        
                     if (tasks[i].props.project_task.status === "IN_PROGRESS") {
                         inProgressItems.push(tasks[i]);
                     }
-
+        
                     if (tasks[i].props.project_task.status === "DONE") {
                         doneItems.push(tasks[i]);
                     }
                 }
             }
         };
+
+        BoardAlgorithm(project_tasks);
 
         return (
             <div className="container">
@@ -67,7 +69,7 @@ class ProjectBoard extends Component {
 
                             {/*SAMPLE PROJECT TASK STARTS HERE*/}
                             
-                            <ProjectTaskItem></ProjectTaskItem>
+                            {todoItems}
 
                             {/*SAMPLE PROJECT TASK ENDS HERE*/}
                         </div>
@@ -79,7 +81,7 @@ class ProjectBoard extends Component {
                             </div>
                             {/* SAMPLE PROJECT TASK STARTS HERE */}
 
-                            <ProjectTaskItem></ProjectTaskItem>
+                            {inProgressItems}
                             
                             {/* SAMPLE PROJECT TASK ENDS HERE */}
                         </div>
@@ -90,6 +92,8 @@ class ProjectBoard extends Component {
                                 </div>
                             </div>
                             {/* SAMPLE PROJECT TASK STARTS HERE */}
+
+                            {doneItems}
 
                             {/*SAMPLE PROJECT TASK ENDS HERE*/}
                         </div>
