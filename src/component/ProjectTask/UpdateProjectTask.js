@@ -1,13 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import { getProjectTask } from "../../actions/ProjectTaskActions";
 
 class UpdateProjectTask extends Component {
+
+    componentDidMount() {
+        const {id} = this.props.match.params;
+        this.props.getProjectTask(id);
+    }
     render() {
         return (
             <div className="addProjectTask">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <a href="/ProjectBoard.html" className="btn btn-light">
+                            <a href="/" className="btn btn-light">
                                 Back to Board
                             </a>
                             <h4 className="display-4 text-center">Add /Update Project Task</h4>
@@ -36,4 +46,15 @@ class UpdateProjectTask extends Component {
     }
 }
 
-export default UpdateProjectTask;
+UpdateProjectTask.propTypes = {
+    project_task: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
+    getProjectTask: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+    project_task: state.project_task,
+    errors: state.errors
+});
+
+export default connect (mapStateToProps, { getProjectTask }) (UpdateProjectTask);
